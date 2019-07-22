@@ -30,7 +30,6 @@ class NewQuestionContainer extends Component {
             correctList: 0,
             isAccept:false,
             error: false,
-            isChecked: 0,
             reset: false,
             notFullAns: false,
         };
@@ -40,7 +39,6 @@ class NewQuestionContainer extends Component {
         this.handleAccept = this.handleAccept.bind(this);
         this.resetForm = this.resetForm.bind(this);
     }
-
 
     componentDidUpdate(prevState) {
         if(this.state.reset){
@@ -99,7 +97,6 @@ class NewQuestionContainer extends Component {
                 this.setState(prevState => {
                     return  {
                         correctList: this.state.correctList + 1,
-                        isChecked:prevState.isChecked + 1,
                         data: prevState.data.map(
                             item => (item.id === +id ?
                                 { ...item,
@@ -114,7 +111,6 @@ class NewQuestionContainer extends Component {
                 this.setState(prevState => {
                     return  {
                         errorList: this.state.errorList + 1,
-                        isChecked:prevState.isChecked + 1,
                         data: prevState.data.map(
                             item => (item.id === +id ?
                                 { ...item,
@@ -133,7 +129,6 @@ class NewQuestionContainer extends Component {
                 this.setState(prevState => {
                     return  {
                         correctList: this.state.correctList - 1,
-                        isChecked:prevState.isChecked - 1,
                         data: prevState.data.map(
                             item => (item.id === +id ?
                                 { ...item,
@@ -147,7 +142,6 @@ class NewQuestionContainer extends Component {
                 this.setState(prevState => {
                     return  {
                         errorList: this.state.errorList - 1,
-                        isChecked:prevState.isChecked - 1,
                         data: prevState.data.map(
                             item => (item.id === +id ?
                                 { ...item,
@@ -170,7 +164,6 @@ class NewQuestionContainer extends Component {
         if(this.state.correctList > 1){
             this.setState(prevState => {
                 return  {
-
                     reset:true
                 }
             });
@@ -180,7 +173,6 @@ class NewQuestionContainer extends Component {
         if(this.state.correctList === 1){
             this.setState(prevState => {
                 return  {
-                    showQuestion:false,
                     error:true,
                     reset:true
                 }
@@ -190,7 +182,6 @@ class NewQuestionContainer extends Component {
         if(this.state.errorList > 0){
             this.setState(prevState => {
                 return  {
-                    showQuestion:false,
                     error:true,
                     reset:true
                 }
@@ -201,7 +192,7 @@ class NewQuestionContainer extends Component {
     };
 
     render() {
-        const {data, error, isAccept, notFullAns, isChecked } = this.state;
+        const {data, error, isAccept, notFullAns,  correctList, errorList } = this.state;
 
         const renderButtons = data.map((item)=> {
             const {id, option, correct, checked, } = item;
@@ -223,21 +214,24 @@ class NewQuestionContainer extends Component {
 
                         <div className={styles.mainGrid}>
 
+                            {isAccept ?
+                                ''
 
+                                :
                             <div className={styles.task}>
                                 <h1>
                                     Выберте все уравнения, в которых решением является число 6
                                 </h1>
 
-                                {isAccept ?
-
-                                    ''
-                                    :
                                     <div className={styles.btnGrid}>
                                         {renderButtons}
                                     </div>
+
+                                    </div>
+
+
                                 }
-                            </div>
+
 
                                     <div className={styles.tips}>
 
@@ -248,7 +242,7 @@ class NewQuestionContainer extends Component {
                                             ''
                                         }
 
-                                        {!isAccept && !notFullAns && !error && isChecked === 0 ?
+                                        {!isAccept && !notFullAns && !error && correctList === 0 && errorList === 0 ?
 
                                             <p>Вычисли X</p>
 
@@ -257,7 +251,7 @@ class NewQuestionContainer extends Component {
                                             ''
                                         }
 
-                                        {notFullAns && isChecked === 0 ?
+                                        {notFullAns && correctList === 0 && errorList === 0  ?
 
                                             <p>Это не все правильные ответы</p>
 
@@ -271,7 +265,7 @@ class NewQuestionContainer extends Component {
                                     <div className={styles.grid}>
                                         <button
                                             onClick={this.handleAccept}
-                                            className={`${isChecked > 0 ? styles.acceptBtnActive : styles.acceptBtn} 
+                                            className={`${correctList > 0 || errorList > 0 ? styles.acceptBtnActive : styles.acceptBtn} 
                                     ${error  ? styles.redAccept : ''} ${isAccept  ? styles.acceptBtnCorrect : ''}`}
 
                                         >
