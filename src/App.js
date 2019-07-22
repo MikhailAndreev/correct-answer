@@ -1,11 +1,10 @@
 import React from 'react';
 import {BrowserRouter, Switch, Route} from "react-router-dom";
-import QuestionContainer from "./Containers/QuestionContainer";
 import NewQuestionContainer from "./Containers/NewQuestionContainer";
 
 
 const App = () => (
-    <BrowserRouter basename="megadizel-mockup">
+    <BrowserRouter basename="correct-answer">
         <Switch>
             <Route path='/' component={NewQuestionContainer} exact/>
 

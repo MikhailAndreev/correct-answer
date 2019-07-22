@@ -5,10 +5,8 @@ import styles from "./NewQuestionContainer.module.css";
 
 const ButtonGrid = (props) => {
     return    <button
-        // value={props.correct}
         onClick={props.handleClick}
         id={props.id}
-        // className={`${props.checked && props.correct===true ? styles.activeBtn : styles.btn} ${props.checked && props.correct === false ? styles.redBtn : ''}`}
         className={`${props.checked  ? styles.activeBtn : styles.btn} ${props.error && props.correct === false && props.checked  ? styles.redBtn : ''}`}
     >
 
@@ -32,13 +30,9 @@ class NewQuestionContainer extends Component {
             correctList: 0,
             isAccept:false,
             error: false,
-            showQuestion: true,
             isChecked: 0,
-            isFullAns: false,
             reset: false,
             notFullAns: false,
-            showResult:false
-
         };
         this.baseState = this.state
         this.handleClick = this.handleClick.bind(this);
@@ -76,12 +70,6 @@ class NewQuestionContainer extends Component {
         }
     }
 
-    showResult = () => {
-        this.setState({
-            showResult: true,
-        });
-    };
-
     findCorrect =(condition)=> {
         const result = this.state.data.find(e => e.id === +condition);
         if(result) {
@@ -102,57 +90,9 @@ class NewQuestionContainer extends Component {
         console.log(this.state.notFullAns)
     };
 
-    // handleClick = (e) => {
-    //     // e.stopPropagation();
-    //     const id = e.target.id;
-    //     const result = this.findCorrect(id) ;
-    //
-    //     this.setState(prevState => {
-    //         return  {
-    //             showQuestion:false,
-    //             data: prevState.data.map(
-    //                 item => (item.id === +id ?
-    //                     { ...item,
-    //                         checked: !item.value
-    //                     } : item)
-    //             )
-    //         }
-    //     });
-    //
-    //     if(result['correct'] === true && parseInt(id, 10) === result['id']){
-    //         this.setState({
-    //             correctList: this.state.correctList + 1,
-    //         });
-    //         console.log('ADD TO ARRAY')
-    //     }
-    //     if(result['correct'] === false){
-    //         this.setState({
-    //             errorList: this.state.errorList + 1,
-    //             error:true
-    //         });
-    //         console.log('ADD TO ARRAY')
-    //     }
-    //
-    //     console.log(typeof result['id'])
-    //     console.log(this.state.correctList)
-    //
-    // };
-
     handleClick = (e) => {
         const id = e.target.id;
         const result = this.findCorrect(id) ;
-
-        // if(result['correct'] === true && parseInt(id, 10) === result['id']){
-        //     this.setState({
-        //         correctList: this.state.correctList + 1,
-        //     });
-        // }
-        // if(result['correct'] === false){
-        //     this.setState({
-        //         errorList: this.state.errorList + 1,
-        //
-        //     });
-        // }
 
         if(!result['checked']){
             if(result['correct'] === true && parseInt(id, 10) === result['id']){
@@ -220,33 +160,6 @@ class NewQuestionContainer extends Component {
 
         }
 
-        // if(!result['checked']){
-        //     this.setState(prevState => {
-        //         return  {
-        //             isChecked:prevState.isChecked + 1,
-        //             data: prevState.data.map(
-        //                 item => (item.id === +id ?
-        //                     { ...item,
-        //                         checked: true
-        //                     } : item)
-        //             )
-        //         }
-        //     });
-        // }
-        // else {
-        //     this.setState(prevState => {
-        //         return  {
-        //             isChecked:prevState.isChecked - 1,
-        //             data: prevState.data.map(
-        //                 item => (item.id === +id ?
-        //                     { ...item,
-        //                         checked: false
-        //                     } : item)
-        //             )
-        //         }
-        //     });
-        // }
-
         console.log(this.state.errorList)
     };
 
@@ -287,9 +200,8 @@ class NewQuestionContainer extends Component {
 
     };
 
-
     render() {
-        const {data, error} = this.state;
+        const {data, error, isAccept, notFullAns, isChecked } = this.state;
 
         const renderButtons = data.map((item)=> {
             const {id, option, correct, checked, } = item;
@@ -311,31 +223,32 @@ class NewQuestionContainer extends Component {
 
                         <div className={styles.mainGrid}>
 
-                            <h1>
-                                Выберте все уравнения, в которых решением является число 6
-                            </h1>
 
-                            {this.state.isAccept ?
+                            <div className={styles.task}>
+                                <h1>
+                                    Выберте все уравнения, в которых решением является число 6
+                                </h1>
 
-                                ''
-                                :
-                                <div className={styles.btnGrid}>
-                                    {renderButtons}
-                                </div>
-                            }
+                                {isAccept ?
 
-
+                                    ''
+                                    :
+                                    <div className={styles.btnGrid}>
+                                        {renderButtons}
+                                    </div>
+                                }
+                            </div>
 
                                     <div className={styles.tips}>
 
-                                        {this.state.isAccept ?
+                                        {isAccept ?
 
                                             <p>Correct answer</p>
                                             :
                                             ''
                                         }
 
-                                        {!this.state.isAccept && !this.state.notFullAns && !this.state.error && this.state.isChecked === 0 ?
+                                        {!isAccept && !notFullAns && !error && isChecked === 0 ?
 
                                             <p>Вычисли X</p>
 
@@ -344,7 +257,7 @@ class NewQuestionContainer extends Component {
                                             ''
                                         }
 
-                                        {this.state.notFullAns && this.state.isChecked === 0 ?
+                                        {notFullAns && isChecked === 0 ?
 
                                             <p>Это не все правильные ответы</p>
 
@@ -358,19 +271,14 @@ class NewQuestionContainer extends Component {
                                     <div className={styles.grid}>
                                         <button
                                             onClick={this.handleAccept}
-                                            // className={`${this.state.isAccept  ? styles.acceptBtnActive : styles.acceptBtn} ${this.state.error || this.state.correctList ===1 ? styles.redAccept : ''}`}
-                                            className={`${this.state.isChecked > 0 ? styles.acceptBtnActive : styles.acceptBtn} 
-                                    ${this.state.error  ? styles.redAccept : ''} ${this.state.isAccept  ? styles.acceptBtnCorrect : ''}`}
+                                            className={`${isChecked > 0 ? styles.acceptBtnActive : styles.acceptBtn} 
+                                    ${error  ? styles.redAccept : ''} ${isAccept  ? styles.acceptBtnCorrect : ''}`}
 
                                         >
                                             Готово
                                         </button>
                                     </div>
-
                         </div>
-
-
-
                 </div>
             </div>
         );
