@@ -1,0 +1,39 @@
+.header {
+  display:flex;
+  max-width: 1920px;
+  margin: 0 auto;
+  text-align: center;
+    background-image: -moz-linear-gradient( 90deg, rgb(159,227,154) 0%, rgb(114,190,170) 100%);
+    background-image: -webkit-linear-gradient( 90deg, rgb(159,227,154) 0%, rgb(114,190,170) 100%);
+    background-image: -ms-linear-gradient( 90deg, rgb(159,227,154) 0%, rgb(114,190,170) 100%);
+    width: 1920px;
+    height: 167px;
+    /*background-color: cornflowerblue;*/
+}
+
+/*.Фон {*/
+
+/*    position: absolute;*/
+/*    left: 0px;*/
+/*    top: 0px;*/
+
+/*    z-index: 153;*/
+/*}*/
+
+
+img {
+  background-color: #77c2a8;
+}
+
+
+/*.slogan {*/
+  /*font-size: 18px;*/
+  /*font-family: "OpenSans", sans-serif;*/
+  /*color: rgb(255, 255, 255);*/
+  /*line-height: 1.2;*/
+  /*text-align: left;*/
+  /*position: absolute;*/
+  /*left: 675.937px;*/
+  /*top: 34.072px;*/
+  /*z-index: 186;*/
+/*}*/
